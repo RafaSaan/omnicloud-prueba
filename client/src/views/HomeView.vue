@@ -1,12 +1,21 @@
 <script setup>
+import { ref } from 'vue'
 import UserList from '@/features/realTimeChat/components/UserList.vue';
 import ChatContainer from '@/features/realTimeChat/components/ChatContainer.vue';
+const currentUserSelected = ref(null);
+const isUserSelected  = ref(false);
+
+function setCurrentUserSelected (user) {
+  currentUserSelected.value = user
+  isUserSelected.value = true
+  console.log(currentUserSelected.value)
+}
 </script>
 
 <template>
   <main class="mainView">
-    <UserList/>
-    <ChatContainer/>
+    <UserList @setCurrentUserSelected="setCurrentUserSelected"/>
+    <ChatContainer :user="currentUserSelected" :isUserSelected="isUserSelected"/>
   </main>
 </template>
 <style scoped>

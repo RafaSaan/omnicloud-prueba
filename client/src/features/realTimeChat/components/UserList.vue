@@ -11,22 +11,40 @@
       </div>
     </div>
     <ul class="usersContainer">
-      <li class="userItem selected" v-for="user in users">
-        <div class="userIcon">
-          {{ getFirstCharacter(user.name.first) }}
-        </div>
-        <div class="userData">
-          <div class="username">
-            <span>{{user.name.first}}</span>
-            <span class="lastName">{{user.name.last}}</span>
+      <transition name="fade" mode="out-in">
+        <li class="userItem selected" v-if="isLoading">
+          <div class="userIcon skeleton" :style="{backgroundColor: '#BFC3C7'}">
           </div>
-          <span class="messageCaption">last message</span>
+          <div class="userData">
+            <div class="username" style="height: 15px;">
+              <span style="width: 140px;height: 15px; display: flex;" class="skeleton"></span>
+            </div>
+            <span class="skeleton" style="width: 50px;height: 15px; display: flex; border-radius: 7px; margin-top: 2px;"></span>
+          </div>
+          <div class="chatDetails">
+            <span class="skeleton" style="width: 20px;height: 15px; border-radius: 7px;"></span>
+          </div>
+        </li>
+        <div class="" v-else >
+          <li class="userItem selected" v-for="user in users" @click="emit('setCurrentUserSelected', user)">
+            <div class="userIcon" :style="{backgroundColor: setRandomColor(user)}">
+              {{ getFirstCharacter(user.name.first) }}
+            </div>
+            <div class="userData">
+              <div class="username">
+                <span>{{user.name.first}}</span>
+                <span class="lastName">{{user.name.last}}</span>
+              </div>
+              <span class="messageCaption">last message</span>
+            </div>
+            <div class="chatDetails">
+              <span>1:12</span>
+              <span>o</span>
+            </div>
+          </li>
         </div>
-        <div class="chatDetails">
-          <span>1:12</span>
-          <span>o</span>
-        </div>
-      </li>
+          
+      </transition>
     </ul>
   </div>
 </template>
@@ -35,15 +53,30 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
+const emit = defineEmits(['setCurrentUserSelected'])
 onMounted(()=> {
   getUsers()
 })
 
 const users = ref([])
+const isLoading = ref(true)
+const colorsList = ['#96D38A', '#65BCF2', '#F29DB0', '#D5A1EE', '#FF8BFE', '#4E5462']
 
 async function getUsers() {
-  const response = await axios.get('https://randomuser.me/api/?results=6')
-  users.value = response.data.results
+  try {
+    const response = await axios.get('https://randomuser.me/api/?results=6')
+    users.value = response.data.results
+    isLoading.value = false
+  }
+  catch {
+    isLoading.value = false
+  }
+}
+
+function setRandomColor(user) {
+  const backgroundColor = colorsList[Math.floor(Math.random()*colorsList.length)]
+  user.backgroundColor = backgroundColor
+  return backgroundColor;
 }
 
 const getFirstCharacter = ((name) => {
@@ -53,9 +86,37 @@ const getFirstCharacter = ((name) => {
 </script>
 
 <style scoped>
+
+@keyframes pulse-bg {
+  0% {
+    background-color: #ddd
+  }
+  50% {
+    background-color: #d0d0d0
+  }
+  100% {
+    background-color: #ddd
+  }
+}
+
+.skeleton {
+  border-radius: 14px;
+  animation: pulse-bg 1s infinite
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 .userList {
   padding: .5rem;
   color: #000;
+  border-right: 1px solid rgb(0, 0, 0, .2);
 }
 .titleSection {
   display: flex;
@@ -114,7 +175,6 @@ ul {
 .userIcon {
   width: 35px;
   height: 35px;
-  background-color: #65BCF2;
   display: flex;
   justify-content: center;
   align-items: center;
