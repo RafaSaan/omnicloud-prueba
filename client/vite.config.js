@@ -10,6 +10,17 @@ export default defineConfig({
     vue(),
     vueJsx(),
   ],
+  server: {
+    port: 5173,
+    host: true,
+    strictPort: true,
+    // proxy: {
+    //   '/socket.io': {
+    //     target: 'ws://localhost:3000',
+    //     ws: true,
+    //   },
+    // }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

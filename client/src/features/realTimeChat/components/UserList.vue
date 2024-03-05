@@ -6,56 +6,132 @@
         <span class="title">Omnicloud Chat</span>
       </div>
       <div class="inputContainer">
-        <input type="text">
+        <input type="text" name="filter input" placeholder="Buscar" v-model="search" @input="filterByName">
         <span class="pi pi-search iconSearch" style="font-size: .8rem"></span>
       </div>
     </div>
     <ul class="usersContainer">
-      <li class="userItem selected" v-for="user in users">
-        <div class="userIcon">
-          {{ getFirstCharacter(user.name.first) }}
-        </div>
-        <div class="userData">
-          <div class="username">
-            <span>{{user.name.first}}</span>
-            <span class="lastName">{{user.name.last}}</span>
+      <transition name="fade" mode="out-in">
+        <li class="userItem selected" v-if="isLoading">
+          <div class="userIcon skeleton" :style="{backgroundColor: '#BFC3C7'}">
           </div>
-          <span class="messageCaption">last message</span>
+          <div class="userData">
+            <div class="username skeletonBar" style="height: 15px;">
+              <span style="width: 140px;height: 15px; display: flex;" class="skeleton"></span>
+            </div>
+            <span class="skeleton" style="width: 50px;height: 15px; display: flex; border-radius: 7px; margin-top: 2px;"></span>
+          </div>
+          <div class="chatDetails">
+            <span class="skeleton" style="width: 20px;height: 15px; border-radius: 7px;"></span>
+          </div>
+        </li>
+        <div class="usersList" v-else >
+          <li
+            :class="user.login.uuid === currentUserIdSelected ? 'selected' : ''"
+            class="userItem"
+            v-for="user in users"
+            @click="setCurrenUserConfig(user)">
+            <img class="userIcon" :src="user.picture.thumbnail" alt="user profile"/>
+            <div class="userData">
+              <div class="username">
+                <span>{{user.name.first}}</span>
+                <span class="lastName">{{user.name.last}}</span>
+              </div>
+              <span class="messageCaption">last message</span>
+            </div>
+            <div class="chatDetails">
+              <span>1:12</span>
+              <span>o</span>
+            </div>
+          </li>
         </div>
-        <div class="chatDetails">
-          <span>1:12</span>
-          <span>o</span>
-        </div>
-      </li>
+          
+      </transition>
     </ul>
   </div>
 </template>
 
 <script setup>
-import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import { useChatStore } from '../store/chat';
 
+const emit = defineEmits(['setCurrentUserSelected'])
 onMounted(()=> {
   getUsers()
 })
 
+const store = useChatStore()
 const users = ref([])
+const isLoading = ref(true)
+const currentUserIdSelected = ref('')
+const search = ref('')
+let usersCopy = []
 
 async function getUsers() {
-  const response = await axios.get('https://randomuser.me/api/?results=6')
-  users.value = response.data.results
+  try {
+    const response = await axios.get('https://randomuser.me/api/?results=6')
+    users.value = response.data.results
+    usersCopy = response.data.results
+    isLoading.value = false
+  }
+  catch {
+    isLoading.value = false
+  }
 }
 
-const getFirstCharacter = ((name) => {
-  return name.charAt(0);
+function setCurrenUserConfig(user) {
+  currentUserIdSelected.value = user.login.uuid
+  store.addChat(user.login.uuid)
+  emit('setCurrentUserSelected', user)
+}
+
+const filterByName = (() => {
+  if (search.value === '') {
+    users.value = usersCopy
+    return
+  }
+  const userFilter = users.value.filter((user) =>
+    user.name.first.toString().toLowerCase().indexOf(search.value) > -1
+  );
+
+  users.value = userFilter
 })
 
 </script>
 
 <style scoped>
+
+@keyframes pulse-bg {
+  0% {
+    background-color: #ddd
+  }
+  50% {
+    background-color: #d0d0d0
+  }
+  100% {
+    background-color: #ddd
+  }
+}
+
+.skeleton {
+  border-radius: 14px;
+  animation: pulse-bg 1s infinite
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 .userList {
   padding: .5rem;
   color: #000;
+  border-right: 1px solid rgb(0, 0, 0, .2);
 }
 .titleSection {
   display: flex;
@@ -114,7 +190,6 @@ ul {
 .userIcon {
   width: 35px;
   height: 35px;
-  background-color: #65BCF2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -153,5 +228,33 @@ ul {
 .selected {
   background-color: #E6EAF0;
   border-radius: 8px;
+}
+@media (max-width: 650px) {
+  .usersContainer {
+    height: auto;
+  }
+  .lastName, .messageCaption, .chatDetails {
+    display: none;
+  }
+  .userItem {
+    width: 50px;
+    height: 70px;
+    flex-direction: column;
+    padding: 0;
+  }
+  .usersList {
+    display: flex;
+  }
+  .username > span, .username {
+    font-size: 10px;
+    text-align: center;
+  }
+  .userData {
+    max-width: 50px;
+    text-overflow: ellipsis;
+  }
+  .skeletonBar {
+    display: none;
+  }
 }
 </style>
