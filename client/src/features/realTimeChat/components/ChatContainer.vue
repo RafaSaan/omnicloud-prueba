@@ -1,7 +1,13 @@
 <script setup>
+import { computed } from "vue";
+import { state } from "@/socket";
 import MessageInput from './MessageInput.vue'
 import MessageList from './MessageList.vue'
+
 const props = defineProps(['user', 'isUserSelected'])
+const connected  = computed(() => {
+  return state.connected
+})
 
 </script>
 <template>
@@ -17,6 +23,7 @@ const props = defineProps(['user', 'isUserSelected'])
       ¡Bienvenido!
     </div>
     <div class="chatContainer" v-else>
+      {{ connected  }}
       <MessageList/>
       <MessageInput/>
     </div>

@@ -5,6 +5,7 @@
 </template>
 
 <script setup>
+import { socket } from '@/socket';
 
 </script>
 

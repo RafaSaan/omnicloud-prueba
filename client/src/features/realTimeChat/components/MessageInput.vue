@@ -1,12 +1,25 @@
 <template>
   <div class="messageInputContainer">
     <span class="pi pi-paperclip"></span>
-    <input type="text" placeholder="Escribe un mensaje...">
+    <input @keyup.enter="onSubmit" type="text" placeholder="Escribe un mensaje..." v-model="message">
   </div>
 </template>
 
 <script>
+import { socket } from '@/socket';
+import { sendMessageHelper } from '../helpers/chatHelper';
   export default {
+    data() {
+      return {
+        isLoading: false,
+        message: ""
+      }
+    },
+    methods: {
+      onSubmit() {   
+        sendMessageHelper(this.message) 
+      },
+    }
     
   }
 </script>
