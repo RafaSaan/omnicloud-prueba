@@ -8,7 +8,8 @@ const props = defineProps(['user', 'isUserSelected'])
   <div class="chatContainerView">
     <div class="chatHeader">
       <div class="userInfo" v-if="isUserSelected">
-        <img class="userIcon" :src="user.picture.thumbnail" alt="user profile"/>
+        <img v-if="user.picture" class="userIcon" :src="user.picture.thumbnail" alt="user profile"/>
+        <div v-else class="userIcon">G</div>
         <div class="username"><span>{{ user.name.first }}</span> <span>{{ user.name.last }}</span></div>
       </div>
     </div>
