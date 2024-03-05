@@ -8,7 +8,9 @@
   Pinia v2
   socketIo v4
 ```
-en el front end se uso una arquitectura basada en features
+en el front end se uso una arquitectura basada en features,
+la comunicacion de informacion de los chats en el cliente, fue a partir de la store con Pinia,
+props y eventos personalizados entre componentes padres e hijos 
 
 ### Back end:
 ```sh
