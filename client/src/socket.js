@@ -7,8 +7,9 @@ export const state = reactive({
   barEvents: []
 });
 
+const URL = import.meta.env.VITE_NODE_ENV === "production" ? undefined : "http://localhost:3000";
 
-export const socket = io('/');
+export const socket = io(URL);
 
 socket.on("connect", () => {
   state.connected = true;

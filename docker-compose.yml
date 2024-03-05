@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  frontend:
+      build:
+        context: ./client
+      # working_dir: /app
+      volumes:
+         - './client:/app/client'
+         - /app/client/node_modules/ 
+      ports:
+        - "5173:5173"
+      depends_on:
+      - omnicloud_server
+  omnicloud_server:
+      build:
+        context: ./server
+      # working_dir: /app
+      volumes:
+         - './server:/app/server'
+         - /app/server/node_modules/ 
+      ports:
+        - "3000:3000"

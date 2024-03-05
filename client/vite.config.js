@@ -11,12 +11,15 @@ export default defineConfig({
     vueJsx(),
   ],
   server: {
-    proxy: {
-      '/socket.io': {
-        target: 'ws://localhost:3000',
-        ws: true,
-      },
-    }
+    port: 5173,
+    host: true,
+    strictPort: true,
+    // proxy: {
+    //   '/socket.io': {
+    //     target: 'ws://localhost:3000',
+    //     ws: true,
+    //   },
+    // }
   },
   resolve: {
     alias: {
