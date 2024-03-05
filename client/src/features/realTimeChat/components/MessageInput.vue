@@ -33,12 +33,6 @@ import { sendMessageHelper } from '../helpers/chatHelper';
         sendMessageHelper(this.message.body)
         this.addMessage({...this.message}) 
         this.message.body = ''
-        // this.$nextTick(function () {
-        //     const container = document.getElementById("messageListContainer");
-        //     const element = document.querySelectorAll(".messageItem");
-        //     const bottom = element[element.length -1].offsetTop
-        //     container.scrollTop = bottom; 
-        // })
       },
     },
     

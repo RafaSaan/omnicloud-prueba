@@ -15,18 +15,20 @@ import { storeToRefs } from 'pinia';
 import { useChatStore } from '../store/chat';
 const store = useChatStore()
 
-const { currentChat } = storeToRefs(store);
+const { currentChat  } = storeToRefs(store);
 
 watch(() => currentChat.value, () => {
   goToBottom()
 },{ deep: true })
 
 function goToBottom() {
-  if (!document.querySelectorAll(".messageItem").length) return
-  const container = document.getElementById("messageListContainer");
-  const element = document.querySelectorAll(".messageItem");
-  const bottom = element[element.length -1].offsetTop
-  container.scrollTop = bottom; 
+  setTimeout(() => {
+    if (!document.querySelectorAll(".messageItem").length) return
+    const container = document.getElementById("messageListContainer");
+    const element = document.querySelectorAll(".messageItem");
+    const bottom = element[element.length -1].offsetTop
+    container.scrollTop = bottom; 
+  }, 100);
 }
 
 
