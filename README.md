@@ -34,3 +34,11 @@ y podremos ver el sistema levantado
 
 ### Sin docker:
   cada carpeta, "client", "server", tienen las instrucciones para leventarlas
+
+## Descripcion del proyecto:
+  Para testear el chat en tiempo real, una vez levantado el sistema, tendremos esta vista inicial,
+  en la cual hay una lista de usuarios, podremos acceder al chat con ese usuario al dar click en
+  el chat que deseemos.
+  Una vez abierto el chat podemos iniciar la conversacion.
+
+  Para responder al chat inicial, en otra pestaña abriremos el sistema en la ruta http://localhost:5173/guest, en esta seccion podremos responder como si fueramos el usuario al cual le mandamos mensaje en una primera instancia y veremos los mensajes en ambos chats
