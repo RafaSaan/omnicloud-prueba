@@ -17,6 +17,3 @@ socket.on("connect", () => {
 socket.on("disconnect", () => {
   state.connected = false;
 });
-socket.on("message", message => {
-  console.log(message)
-});

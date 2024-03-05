@@ -8,7 +8,6 @@ const isUserSelected  = ref(false);
 function setCurrentUserSelected (user) {
   currentUserSelected.value = user
   isUserSelected.value = true
-  console.log(currentUserSelected.value)
 }
 </script>
 

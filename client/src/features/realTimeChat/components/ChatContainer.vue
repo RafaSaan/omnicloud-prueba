@@ -1,13 +1,17 @@
 <script setup>
 import { computed } from "vue";
-import { state } from "@/socket";
+import { socket } from "@/socket";
 import MessageInput from './MessageInput.vue'
 import MessageList from './MessageList.vue'
+import { useChatStore } from "../store/chat";
 
 const props = defineProps(['user', 'isUserSelected'])
-const connected  = computed(() => {
-  return state.connected
-})
+const store = useChatStore()
+
+socket.on("message", message => {
+  store.addMessage(message)
+});
+
 
 </script>
 <template>
@@ -23,9 +27,8 @@ const connected  = computed(() => {
       ¡Bienvenido!
     </div>
     <div class="chatContainer" v-else>
-      {{ connected  }}
       <MessageList/>
-      <MessageInput/>
+      <MessageInput :chatId="user.login.uuid"/>
     </div>
   </div>
 </template>

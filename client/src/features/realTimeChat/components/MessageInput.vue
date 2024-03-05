@@ -1,25 +1,46 @@
 <template>
   <div class="messageInputContainer">
     <span class="pi pi-paperclip"></span>
-    <input @keyup.enter="onSubmit" type="text" placeholder="Escribe un mensaje..." v-model="message">
+    <input
+      @keyup.enter="onSubmit"
+      type="text"
+      placeholder="Escribe un mensaje..."
+      name="messageInput"
+      v-model="message.body">
   </div>
 </template>
 
 <script>
-import { socket } from '@/socket';
+import { mapActions } from 'pinia'
+import { useChatStore } from "../store/chat";
 import { sendMessageHelper } from '../helpers/chatHelper';
+
   export default {
+    props: ['chatId'],
     data() {
       return {
         isLoading: false,
-        message: ""
+        message: {
+          body: '',
+          from: 'me' 
+        }
       }
     },
     methods: {
-      onSubmit() {   
-        sendMessageHelper(this.message) 
+      ...mapActions(useChatStore, ['addMessage']),
+      onSubmit() {
+        if (this.message.body === '') return
+        sendMessageHelper(this.message.body)
+        this.addMessage({...this.message}) 
+        this.message.body = ''
+        // this.$nextTick(function () {
+        //     const container = document.getElementById("messageListContainer");
+        //     const element = document.querySelectorAll(".messageItem");
+        //     const bottom = element[element.length -1].offsetTop
+        //     container.scrollTop = bottom; 
+        // })
       },
-    }
+    },
     
   }
 </script>

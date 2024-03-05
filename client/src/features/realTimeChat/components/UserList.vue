@@ -52,14 +52,16 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import { useChatStore } from '../store/chat';
 
 const emit = defineEmits(['setCurrentUserSelected'])
 onMounted(()=> {
   getUsers()
 })
 
+const store = useChatStore()
 const users = ref([])
 const isLoading = ref(true)
 const currentUserIdSelected = ref('')
@@ -76,6 +78,7 @@ async function getUsers() {
 }
 function setCurrenUserConfig(user) {
   currentUserIdSelected.value = user.login.uuid
+  store.addChat(user.login.uuid)
   emit('setCurrentUserSelected', user)
 }
 
