@@ -1,4 +1,6 @@
 <script setup>
+import MessageInput from './MessageInput.vue'
+import MessageList from './MessageList.vue'
 const props = defineProps(['user', 'isUserSelected'])
 
 </script>
@@ -6,12 +8,16 @@ const props = defineProps(['user', 'isUserSelected'])
   <div class="chatContainerView">
     <div class="chatHeader">
       <div class="userInfo" v-if="isUserSelected">
-        <div class="userIcon" :style="{backgroundColor: user.backgroundColor}">{{ user.name.first.charAt(0) }}</div>
+        <img class="userIcon" :src="user.picture.thumbnail" alt="user profile"/>
         <div class="username"><span>{{ user.name.first }}</span> <span>{{ user.name.last }}</span></div>
       </div>
     </div>
-    <div class="chatContainer">
-      chat container
+    <div class="noUserSelected" v-if="!isUserSelected">
+      ¡Bienvenido!
+    </div>
+    <div class="chatContainer" v-else>
+      <MessageList/>
+      <MessageInput/>
     </div>
   </div>
 </template>
@@ -20,6 +26,7 @@ const props = defineProps(['user', 'isUserSelected'])
 <style scoped>
 .chatContainerView {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -59,6 +66,19 @@ const props = defineProps(['user', 'isUserSelected'])
   height: 100%;
   border-bottom: 1px solid rgb(0, 0, 0, .2);
   border-right: 1px solid rgb(0, 0, 0, .2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.noUserSelected {
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
 }
 
 </style>

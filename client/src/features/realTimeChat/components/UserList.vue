@@ -26,10 +26,12 @@
           </div>
         </li>
         <div class="" v-else >
-          <li class="userItem selected" v-for="user in users" @click="emit('setCurrentUserSelected', user)">
-            <div class="userIcon" :style="{backgroundColor: setRandomColor(user)}">
-              {{ getFirstCharacter(user.name.first) }}
-            </div>
+          <li
+            :class="user.login.uuid === currentUserIdSelected ? 'selected' : ''"
+            class="userItem"
+            v-for="user in users"
+            @click="setCurrenUserConfig(user)">
+            <img class="userIcon" :src="user.picture.thumbnail" alt="user profile"/>
             <div class="userData">
               <div class="username">
                 <span>{{user.name.first}}</span>
@@ -60,7 +62,7 @@ onMounted(()=> {
 
 const users = ref([])
 const isLoading = ref(true)
-const colorsList = ['#96D38A', '#65BCF2', '#F29DB0', '#D5A1EE', '#FF8BFE', '#4E5462']
+const currentUserIdSelected = ref('')
 
 async function getUsers() {
   try {
@@ -72,11 +74,9 @@ async function getUsers() {
     isLoading.value = false
   }
 }
-
-function setRandomColor(user) {
-  const backgroundColor = colorsList[Math.floor(Math.random()*colorsList.length)]
-  user.backgroundColor = backgroundColor
-  return backgroundColor;
+function setCurrenUserConfig(user) {
+  currentUserIdSelected.value = user.login.uuid
+  emit('setCurrentUserSelected', user)
 }
 
 const getFirstCharacter = ((name) => {
