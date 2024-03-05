@@ -6,7 +6,7 @@
         <span class="title">Omnicloud Chat</span>
       </div>
       <div class="inputContainer">
-        <input type="text">
+        <input type="text" name="filter input">
         <span class="pi pi-search iconSearch" style="font-size: .8rem"></span>
       </div>
     </div>
@@ -25,7 +25,7 @@
             <span class="skeleton" style="width: 20px;height: 15px; border-radius: 7px;"></span>
           </div>
         </li>
-        <div class="" v-else >
+        <div class="usersList" v-else >
           <li
             :class="user.login.uuid === currentUserIdSelected ? 'selected' : ''"
             class="userItem"
@@ -216,5 +216,30 @@ ul {
 .selected {
   background-color: #E6EAF0;
   border-radius: 8px;
+}
+@media (max-width: 650px) {
+  .usersContainer {
+    height: auto;
+  }
+  .lastName, .messageCaption, .chatDetails {
+    display: none;
+  }
+  .userItem {
+    width: 50px;
+    height: 70px;
+    flex-direction: column;
+    padding: 0;
+  }
+  .usersList {
+    display: flex;
+  }
+  .username > span, .username {
+    font-size: 10px;
+    text-align: center;
+  }
+  .userData {
+    max-width: 50px;
+    text-overflow: ellipsis;
+  }
 }
 </style>

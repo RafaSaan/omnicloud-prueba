@@ -26,4 +26,10 @@ function setCurrentUserSelected (user) {
   border-radius: 8px;
   overflow: hidden;
 }
+@media (max-width: 650px) {
+  .mainView {
+    flex-direction: column;
+    height: auto;
+  }
+}
 </style>

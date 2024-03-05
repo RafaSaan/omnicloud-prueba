@@ -91,5 +91,10 @@ socket.on("message", message => {
   align-items: center;
   font-size: 20px;
 }
+@media (max-width: 650px) {
+  .chatContainer {
+    height: 350px;
+  }
+}
 
 </style>

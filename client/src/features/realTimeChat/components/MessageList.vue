@@ -57,6 +57,7 @@ li {
   padding: 2px 14px;
   vertical-align: top;
   border-radius: 10px;
+  max-width: 200px;
 }
 .myMessage {
   float: right;

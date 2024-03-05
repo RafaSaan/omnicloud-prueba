@@ -18,7 +18,7 @@ store.setGuestChat()
     <ChatContainer :user="user" :isUserSelected="true"/>
   </main>
 </template>
-<style scoped>
+<style>
 .guestView {
   width: 100%;
   height: 550px;
@@ -26,5 +26,10 @@ store.setGuestChat()
   background-color: #EFF3F9;
   border-radius: 8px;
   overflow: hidden;
+}
+@media (max-width: 650px) {
+  #app {
+    align-items: start;
+  }
 }
 </style>
