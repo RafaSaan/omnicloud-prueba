@@ -6,7 +6,7 @@
         <span class="title">Omnicloud Chat</span>
       </div>
       <div class="inputContainer">
-        <input type="text" name="filter input">
+        <input type="text" name="filter input" placeholder="Buscar" v-model="search" @input="filterByName">
         <span class="pi pi-search iconSearch" style="font-size: .8rem"></span>
       </div>
     </div>
@@ -65,25 +65,37 @@ const store = useChatStore()
 const users = ref([])
 const isLoading = ref(true)
 const currentUserIdSelected = ref('')
+const search = ref('')
+let usersCopy = []
 
 async function getUsers() {
   try {
     const response = await axios.get('https://randomuser.me/api/?results=6')
     users.value = response.data.results
+    usersCopy = response.data.results
     isLoading.value = false
   }
   catch {
     isLoading.value = false
   }
 }
+
 function setCurrenUserConfig(user) {
   currentUserIdSelected.value = user.login.uuid
   store.addChat(user.login.uuid)
   emit('setCurrentUserSelected', user)
 }
 
-const getFirstCharacter = ((name) => {
-  return name.charAt(0);
+const filterByName = (() => {
+  if (search.value === '') {
+    users.value = usersCopy
+    return
+  }
+  const userFilter = users.value.filter((user) =>
+    user.name.first.toString().toLowerCase().indexOf(search.value) > -1
+  );
+
+  users.value = userFilter
 })
 
 </script>
