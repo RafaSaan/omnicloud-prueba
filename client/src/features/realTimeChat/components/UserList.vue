@@ -16,7 +16,7 @@
           <div class="userIcon skeleton" :style="{backgroundColor: '#BFC3C7'}">
           </div>
           <div class="userData">
-            <div class="username" style="height: 15px;">
+            <div class="username skeletonBar" style="height: 15px;">
               <span style="width: 140px;height: 15px; display: flex;" class="skeleton"></span>
             </div>
             <span class="skeleton" style="width: 50px;height: 15px; display: flex; border-radius: 7px; margin-top: 2px;"></span>
@@ -252,6 +252,9 @@ ul {
   .userData {
     max-width: 50px;
     text-overflow: ellipsis;
+  }
+  .skeletonBar {
+    display: none;
   }
 }
 </style>
