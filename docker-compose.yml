@@ -3,7 +3,6 @@ services:
   frontend:
       build:
         context: ./client
-      # working_dir: /app
       volumes:
          - './client:/app/client'
          - /app/client/node_modules/ 
@@ -14,7 +13,6 @@ services:
   omnicloud_server:
       build:
         context: ./server
-      # working_dir: /app
       volumes:
          - './server:/app/server'
          - /app/server/node_modules/ 
