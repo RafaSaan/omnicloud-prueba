@@ -8,7 +8,7 @@
   Pinia v2
   socketIo v4
 ```
-en el front end se uso una arquitectura basada en fuatures
+en el front end se uso una arquitectura basada en features
 
 ### Back end:
 ```sh
